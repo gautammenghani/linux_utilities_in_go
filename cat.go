@@ -24,7 +24,7 @@ func ReadFile(fileNames []string) (string, error){
         //fmt.Println(s)
         data, err := ioutil.ReadFile(fileName)
         if (err != nil) {
-            return "", errors.New(fmt.Sprintf("Could not read file : %s\n", err))
+            return contents, errors.New(fmt.Sprintf("Could not read file : %s\n", err))
         } else {
             contents += "\n" + "[+] Reading file : "+fileName + "\n" + string(data)
         }
@@ -34,13 +34,16 @@ func ReadFile(fileNames []string) (string, error){
 
 func main() {
     if (len(os.Args) == 1) {
-        fmt.Println("Usage : cat <file_name1> [<file_name2> ...]")
-        os.Exit(0)
+        var input string
+        for {
+            fmt.Scanln(&input)
+            fmt.Println(input)
+        }   
     }
-    
     //Read the file
     contents, err := ReadFile(os.Args[1:])
     if (err != nil) {
+        fmt.Println (contents)
         errMsg := fmt.Sprintf ("Error occurred when reading file: %s\n", err)
         fmt.Println (errMsg)
         os.Exit(0)
