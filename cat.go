@@ -33,7 +33,7 @@ func ReadFile(fileNames []string) (string, error){
 }
 
 func main() {
-    if (len(os.Args) == 1) {
+    if (len(os.Args) == 1 || os.Args[1]=="-") {
         var input string
         for {
             fmt.Scanln(&input)
