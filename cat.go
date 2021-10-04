@@ -7,6 +7,7 @@ import (
     "os"
     "path/filepath"
     "errors"
+    "strings"
 )
 
 func ReadFile(fileNames []string) (string, error){
@@ -32,21 +33,44 @@ func ReadFile(fileNames []string) (string, error){
     return contents, nil
 }
 
+func GetContents(userInput []string) (string, error) {
+  //Extract the switches from cmnd line args
+  var switches[]string
+  for _,elem := range userInput {
+    if(string(elem[0])=="-") {
+      t := strings.Split(elem[1:], "")
+      for _,st := range t {
+        switches = append(switches, st)
+      }
+    }
+  }
+  fmt.Println(switches)
+  contents, err := ReadFile(userInput)
+      if (err != nil) {
+          fmt.Println (contents)
+          errMsg := fmt.Sprintf ("Error occurred when reading file: %s\n", err)
+          fmt.Println (errMsg)
+          os.Exit(0)
+      } 
+      return "hello", nil  
+}
+
 func main() {
+    // Std input
     if (len(os.Args) == 1 || os.Args[1]=="-") {
         var input string
         for {
             fmt.Scanln(&input)
             fmt.Println(input)
-        }   
+        } 
+    } else {
+      contents, err := GetContents(os.Args[1:])
+      if (err != nil) {
+          fmt.Println (contents)
+          errMsg := fmt.Sprintf ("Error occurred when reading file: %s\n", err)
+          fmt.Println (errMsg)
+          os.Exit(0)
+      }
+      io.WriteString(os.Stdout, contents)    
     }
-    //Read the file
-    contents, err := ReadFile(os.Args[1:])
-    if (err != nil) {
-        fmt.Println (contents)
-        errMsg := fmt.Sprintf ("Error occurred when reading file: %s\n", err)
-        fmt.Println (errMsg)
-        os.Exit(0)
-    }
-    io.WriteString(os.Stdout, contents)    
 }
